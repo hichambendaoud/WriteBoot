@@ -1,0 +1,592 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Projects{% endblock %}
+
+{% block head %} 
+<style>
+    /* Your existing styles here */
+
+    /* Style for the search input field */
+    #searchInput {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+
+    /* Style for the modal header */
+    .modal-header {
+        color: white; /* Text color */
+    }
+
+    .modal-title {
+        text-align: center;
+    }
+    /* Style for the select box */
+    select {
+        width: 100%; /* Make the select box full-width */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    /* Style for the submit button */
+    .btn-language {
+        background-color: #2c3e50; /* Set your desired button color */
+        border: none;
+        color: white;
+        border-radius: 4px;
+    }
+
+    /* Hover effect for the submit button */
+    .btn-language:hover {
+        background-color: #2980b9; /* Change color on hover */
+        color: white;
+    }
+    .form-select{
+        border:none;
+    }
+
+
+    .home-bg-pr {
+        height: 100vh;
+        background-position: center;
+        background-size: cover;
+        background-attachment: fixed;
+        position: relative;
+        z-index: 2;
+        {% comment %} background: #f0f3f5; {% endcomment %}
+        background-color: #ecf0f1;
+        {% comment %} background: linear-gradient(90deg, #700B50, #473884); {% endcomment %}
+    }
+
+    h1, h2, h3, h4, h5, h6,
+    .display-4 {
+        color: #000000;
+        font-weight: 700;
+    }
+
+    label {
+        font-weight: bold;
+        color: #000000;
+    }
+
+    .navbar-scrolled {
+        background-color: #1c1b1b92;
+    }
+    .navbar {
+        background-color: #2c3e50;
+    }
+    @media (max-width: 768px) {
+        .home-bg-pr {
+            background-size: auto;
+            height: 120vh;
+        }
+        .card {
+            width: 100%; 
+        }
+    }
+    
+    /* Style for navigation buttons */
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+    /* Remove background color */
+    .btn-custom-primary {
+        background-color: transparent;
+        border: none;
+        transition: transform 0.2s, color 0.2s;
+    }
+    
+    /* Add hover effect */
+    .btn-custom-primary:hover {
+        transform: scale(1.3); /* Make the button slightly larger on hover */
+        color: #2c3e50; /* Change the color on hover (adjust as needed) */
+    }
+    
+    /* Style the text and icons */
+    .btn-text {
+        display: none; /* Initially hide the text */
+        margin-left: 5px; /* Add some spacing between icon and text */
+    }
+    
+    .btn-custom-primary:hover .btn-text {
+        display: inline-block; /* Show the text on hover */
+    }
+    
+    
+
+    /* Style for the project cards */
+.project-card {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+/* Add the project-card::after pseudo-element */
+.project-card::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: -100%;
+    left: 0;
+    background-color: transparent; /* Set background to transparent */
+    background-image: linear-gradient(90deg, #2c3e50a8, #2c3e50ba); /* Update gradient colors */
+    z-index: -1;
+    opacity: 0;
+    border-color: #ffffff;
+    transition: all 0.4s ease;
+}
+
+    .project-card:hover {
+        border-color: #828D99; /* Border color on hover */
+        transform: translateY(-5px);
+        background-color: #828D99; /* Background color on hover */
+        color: #ffffff; /* Text color on hover */
+    }
+    .project-card:hover .project-title {
+        color: #FFFFFF; /* Adjust this color */
+    }
+    /* Apply hover effect to .project-card::after when hovering over .project-card */
+    .project-card:hover::after {
+        opacity: 1;
+        top: 0;
+    }
+/* Style for the card titles */
+.project-title {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-align: center;
+    
+}
+
+/* Style for the view buttons */
+.btn-custom-secondary {
+    border-radius: 8px;
+    background-color: #F8F9F9;
+    border-color: #F8F9F9;
+    color: #333;
+    padding: 0.25rem 1rem;
+    font-size: 16px;
+    transition: background-color 0.3s ease-in-out;
+    text-align: center; /* Center-align the button text */
+    width: 100%;
+}
+
+.btn-custom-secondary:hover {
+    background-color: #5DADE2;
+    border-color: #fff;
+    color: #fff;
+}
+
+/* Hover effect for the cards */
+.card-hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+    /* Style for the deleteProjectModal */
+    #deleteProjectModal .modal-content {
+        background-color: #fff; /* Modal background color */
+    }
+
+    #deleteProjectModal .modal-title {
+        font-weight: bold;
+    }
+
+    #deleteProjectModal .modal-body {
+        font-size: 16px;
+    }
+
+    #deleteProjectModal .btn-danger {
+        background-color: #dc3545; /* Delete button background color */
+        color: #fff; /* Delete button text color */
+        border-radius: 8px; /* Add rounded corners to the button */
+        border: none; /* Remove button border */
+    }
+
+    #deleteProjectModal .btn-danger:hover {
+        background-color: #c82333; /* Hover color for delete button */
+    }
+
+    #deleteProjectModal .btn-secondary {
+        padding: 8px 18px  8px 18px;
+        color: #fff; /* Cancel button text color */
+        border-radius: 8px; /* Add rounded corners to the button */
+        border: none; /* Remove button border */
+    }
+
+    #deleteProjectModal .btn-secondary:hover {
+        background-color: #c82333; /* Hover color for cancel button */
+    }
+
+    /* Style for the "Delete" button */
+.btn-danger {
+    background-color: #F8F9F9; /* Change to your desired background color */
+    border: none; /* Change to your desired border color */
+    color: #dc3545; /* Text color */
+    border-radius: 8px; /* Add border radius for rounded corners */
+    padding: 0.25rem 1rem;
+}
+
+/* Hover effect for the "Delete" button */
+.btn-danger:hover {
+    background-color: #E56464 ; /* Change to your desired background color on hover */
+   // border-color: #fff ; /* Change to your desired border color on hover */
+    color: #fff; /* Text color on hover */
+}
+.btn{
+    padding:8px 18px;
+}
+
+#Create-btn{
+padding:  9px 14px  9px 14px;
+}
+/* Style the search container */
+.search-container {
+    position: relative;
+}
+
+/* Style the search input */
+#searchInput {
+    padding-left: 30px; /* Add padding to accommodate the icon */
+}
+
+/* Style the search icon */
+.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px; /* Adjust the left position as needed */
+    transform: translateY(-50%);
+    pointer-events: none; /* Prevent the icon from being clickable */
+    color: #777; /* Icon color */
+}
+
+</style>
+
+
+{% endblock %}
+    <!-- Right nav -->
+    {% block right_nav %}
+    <!-- Lift -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-lg-0">
+            <li class="nav-item py-2">
+            <a class="d-flex nav-link me-lg-4 fw-bolder " href="/"><b>Accueil</b></a>
+            </li>
+        </ul>
+
+{% endblock%}
+
+{% block home %}
+<!-- header -->
+<div class="home-bg-pr d-flex align-items-center">
+    <div class="container">
+        {% if user_projects %}
+        <div class="row">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="col-md-3 mb-4">
+                    <button id="Create-btn" type="button" class="btn-outline-dark rounded-3 btn" data-bs-toggle="modal" data-bs-target="#languageSelectionModal">Créer <i class="fa-solid fa-square-pen fa-lg"></i>
+                    </button>
+                </div>
+                <div class="col-md-3 mb-4 search-container">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Rechercher d'espace">
+                    <span class="search-icon"><i class="fas fa-search"></i></span>
+                </div>
+                
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row" id="projectsRow">
+            {% if user_projects %}
+            {% for project in user_projects|slice:":6" %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title project-title">{{ project.name }}</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{% url 'workspace' project_id=project.id %}{% if language %}?language={{ language }}{% endif %}" class="btn btn-sm btn-custom-secondary ms-2">Voir l'Espace</a>
+                            <button type="button" class="btn btn-danger ms-2 delete-project"  data-project-id="{{ project.id }}">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            {% else %}
+            <div class="col-12 text-center">
+                <p class="lead">Aucun Espace trouvé</p>
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="rounded-3 btn btn-outline-dark d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#languageSelectionModal">
+                        <i class="fa-solid fa-square-pen fa-2x me-2"></i>
+                        Créer un Espace
+                    </button>
+                </div>     
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if user_projects|length > 6 %}
+        <div class="row">
+            <div class="col-12 text-center nav-buttons">
+                <button type="button" class=" btn-custom-primary" id="prevButton"><i class="fas fa-chevron-left fa-lg"></i>Précédent</button>
+                <button type="button" class=" btn-custom-primary" id="nextButton">Suivant<i class="fas fa-chevron-right fa-lg"></i></button>
+            </div>
+        </div>
+        {% endif %}
+        
+    </div>
+</div>
+   <!-- Add this modal code to your template -->
+<div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteProjectModalLabel">Confirmer la suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir supprimer cet espace de travail ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+    {% block script %}
+    
+<!-- Add this JavaScript code to your template -->
+<script>
+    
+// Define a function to set up the event listener for delete buttons
+function setupDeleteButtonListeners() {
+    // Add a click event listener to the delete buttons (attach it only once)
+    projectsContainer.addEventListener('click', function (event) {
+        if (event.target && event.target.classList.contains('delete-project')) {
+            const button = event.target;
+            const projectId = button.getAttribute('data-project-id');
+            
+            // Show the confirmation modal
+            $('#deleteProjectModal').modal('show');
+            
+            // Handle the project deletion when the user confirms
+            const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+            confirmDeleteButton.addEventListener('click', () => {
+                // Send an AJAX request to delete the project
+                fetch(`/delete_project/${projectId}/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}', // Include the CSRF token
+                    },
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Project deleted successfully
+                        // Remove the corresponding project card from the UI
+                        const projectCard = button.closest('.col-lg-4');
+                        projectCard.remove();
+                    } else {
+                        // Handle the error if project deletion fails
+                        console.error('Failed to delete project');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting project:', error);
+                });
+                
+                // Close the confirmation modal
+                $('#deleteProjectModal').modal('hide');
+            });
+        }
+    });
+}
+
+// Call the setupDeleteButtonListeners function when the document is ready
+document.addEventListener('DOMContentLoaded', function () {
+    setupDeleteButtonListeners();
+    
+    // Initial fetch on page load
+    fetchProjects();
+});
+
+// Rest of your code for fetching projects and pagination
+
+</script>
+
+    
+    
+    <script>
+        var projectsContainer = document.getElementById("projectsRow");
+        var prevButton = document.getElementById("prevButton");
+        var nextButton = document.getElementById("nextButton");
+        var currentPage = 1; // Current page for pagination
+        var projectsPerPage = window.innerWidth <= 768 ? 3 : 6; // Adjust the number of projects per page
+        
+        prevButton.addEventListener("click", function() {
+            currentPage -= 1;
+            fetchProjects();
+        });
+        
+        nextButton.addEventListener("click", function() {
+            currentPage += 1;
+            fetchProjects();
+        });
+        
+        function fetchProjects() {
+            var url = "{% url 'fetch_projects' %}?page=" + currentPage + "&small_screen=" + (window.innerWidth <= 768);
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.projects && data.projects.length > 0) {
+                        projectsContainer.innerHTML = ""; // Clear the container before adding new projects
+                        data.projects.forEach(project => {
+                            var projectCard = createProjectCard(project);
+                            projectsContainer.appendChild(projectCard);
+                        });
+                        prevButton.style.display = currentPage > 1 ? "block" : "none"; // Show/hide the "Previous" button
+                        nextButton.style.display = data.has_next ? "block" : "none"; // Show/hide the "Next" button
+                        
+                        // Check if the current page is 2, and adjust the "Next" button alignment accordingly
+                        if (currentPage === 2) {
+                            nextButton.classList.add("ml-auto");
+                        } else {
+                            nextButton.classList.remove("ml-auto");
+                        }
+                    } else {
+                        prevButton.style.display = "none"; // Hide the "Previous" button
+                        nextButton.style.display = "none"; // Hide the "Next" button
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching projects:", error);
+                });
+        }
+        
+        // Initial fetch on page load
+        fetchProjects();
+        
+        
+function createProjectCard(project) {
+    var cardDiv = document.createElement("div");
+    cardDiv.className = "col-lg-4 col-md-6 mb-4";
+
+    var card = document.createElement("div");
+    card.className = "card project-card";
+
+    var cardBody = document.createElement("div");
+    cardBody.className = "card-body";
+
+    var cardTitle = document.createElement("h5");
+    cardTitle.className = "card-title project-title";
+    cardTitle.textContent = project.name;
+
+    var buttonContainer = document.createElement("div");
+    buttonContainer.className = "d-flex justify-content-between align-items-center";
+
+    var viewButton = document.createElement("a");
+    viewButton.className = "btn btn-sm btn-custom-secondary";
+    viewButton.textContent = "Voir l'Espace";
+    viewButton.href = "/workspace/" + project.id + "/{% if language %}?language={{ language }}{% endif %}";
+
+    var deleteButton = document.createElement("button");
+    deleteButton.className = "btn btn-danger ms-2 delete-project";
+    deleteButton.setAttribute("data-project-id", project.id);
+
+    var deleteIcon = document.createElement("i");
+    deleteIcon.className = "fa-solid fa-trash-can";
+
+    deleteButton.appendChild(deleteIcon);
+
+    
+    // Append view button, delete button, and delete button card to the button container
+    buttonContainer.appendChild(viewButton);
+    buttonContainer.appendChild(deleteButton);
+    
+
+    // Append card title and button container to the card body
+    cardBody.appendChild(cardTitle);
+    cardBody.appendChild(buttonContainer);
+
+    // Append card body to the card
+    card.appendChild(cardBody);
+
+    // Append card to the card div
+    cardDiv.appendChild(card);
+
+    // Add hover effect to the card
+    cardDiv.addEventListener("mouseenter", function () {
+        card.classList.add("card-hover");
+    });
+
+    cardDiv.addEventListener("mouseleave", function () {
+        card.classList.remove("card-hover");
+    });
+
+    return cardDiv;
+}
+
+    </script>
+<script>
+    
+    // Add a keyup event listener to the search input
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('keyup', function () {
+        const searchQuery = searchInput.value.toLowerCase();
+    
+        // Fetch all user projects from the server
+        fetch('/fetch_projects/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.projects) {
+                    // Filter the projects based on the search input
+                    const filteredProjects = data.projects.filter(project => {
+                        return project.name.toLowerCase().includes(searchQuery);
+                    });
+    
+                    // Determine the number of projects to display based on screen size
+                    const projectsToDisplay = window.innerWidth <= 768 ? 3 : 6;
+    
+                    // Select the projectsRow container
+                    const projectsRow = document.getElementById('projectsRow');
+    
+                    // Clear the projectsRow container
+                    projectsRow.innerHTML = '';
+    
+                    // Display the filtered projects while limiting to the specified number
+                    filteredProjects.slice(0, projectsToDisplay).forEach(project => {
+                        const projectCard = createProjectCard(project);
+                        projectsRow.appendChild(projectCard);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching projects:', error);
+            });
+    });
+</script>
+    {% endblock %}
+    {% include "language_selection_modal.html" %}
+    {% block footer %} 
+    <!-- Footer -->
+      {% include "footer.html" %}
+      {% endblock %}

@@ -1,0 +1,228 @@
+<!-- Login Modal -->
+{% load socialaccount %}
+<div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="wrapper">
+                <form class="form-l" method="POST" action="{% url 'login_view' %}">
+                    {% csrf_token %}
+                    <h1>Login</h1>
+                    
+                    <label class="pl-2 fw-bold  py-2">Nom d'utilisateur</label>
+                    <input type="text" placeholder="Nom d'utilisateur" id="username" name="username" required>
+
+                    <label class="py-2 pl-2 fw-bold">Mot de passe</label>
+                    <!-- Add an ID to the eye icon element -->
+                    <div class="pass-icon">
+                        <input autocomplete="current-password" type="password" id="password" name="password" placeholder="Mot de passe" required>
+                        <!-- Use "AFICHER" and "MASQUE" labels instead of icons -->
+                        <span id="togglePassword" style="cursor: pointer; position: absolute; top: 12%; right: 15px;">AFICHER</span>
+                    </div>
+                    
+                    <button type="submit" id="login-btn">Identifiant</button>
+                
+                    <div class="or">
+                        <hr>
+                        <span>OR</span>
+                        <hr>
+                    </div>
+                    <button type="button" onclick="redirectToGoogleOAuth()" class="google-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
+                            <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
+                        </svg>
+                        Login with Google
+                    </button>
+                    <div class="register">
+                        <p>If you don't have an account</p>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#signupModal" class="register-btn">Register</button>
+                    </div>
+                </form>
+                {% if error_message_l %}
+                <div  class="alert alert-danger mt-2" >{{ error_message_l }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Get references to the password input and the label
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+
+    // Add a click event listener to the label
+    togglePassword.addEventListener("click", function () {
+        // Toggle the password input type between "password" and "text"
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            // Change the label to "MASQUE"
+            togglePassword.textContent = "MASQUE";
+        } else {
+            passwordInput.type = "password";
+            // Change the label to "AFICHER"
+            togglePassword.textContent = "AFICHER";
+        }
+    });
+</script>
+
+
+<script>
+    function redirectToGoogleOAuth() {
+        // Define your Google OAuth URL here
+        var googleOAuthUrl = "{% provider_login_url 'google' %}?next=/";
+       //var googleOAuthUrl = "https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?client_id=1097064748714-ejpfnjdr0p9jmv2h04ahudd8p0nrpn4b.apps.googleusercontent.com&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Faccounts%2Fgoogle%2Flogin%2Fcallback%2F&scope=email%20profile&response_type=code&state=pUqj4fbBuNVs&access_type=online&service=lso&o2v=2&flowName=GeneralOAuthFlow";
+        // Redirect the user to the Google OAuth URL
+        window.location.href = googleOAuthUrl;
+    }
+</script>
+<!-- Login Modal end -->
+<style>
+    #togglePassword {
+        text-align: center;
+        color: var(--input-icon);
+    }
+    .modal-content{
+        border-radius: 25px;
+    }
+    .wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 40px;
+        width: 100%;
+    }
+    .form-l {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+    label {
+        margin-top: 3px;
+        color: #2b2684;
+    }
+    h1 {
+        color: #2b2684;
+        margin-bottom: 20px;
+        font-size: 2rem;
+    }
+    .wrapper p {
+        font-size: 0.875rem;
+        color: #2b2684;
+        margin-bottom: 20px;
+    }
+    .pass-icon {
+        display: flex;
+        position: relative;
+        width: 100%;
+    }
+    #username,
+    #password {
+        height: 40px;
+        width: 100%;
+        border-radius: 15px;
+        padding-left: 15px;
+        border: 1px solid #2b2684;
+        position: relative;
+    }
+    .pass-icon img {
+        width: 25px;
+        position: absolute;
+        align-self: center;
+        top: 30%;
+        right: 15px;
+        filter: opacity(0.3);
+        cursor: pointer;
+    }
+    a {
+        text-decoration: none;
+        color: #2b2684;
+        font-size: 0.875rem;
+        text-align: right;
+        margin-right: 15px;
+    }
+    #password {
+        margin-bottom: 10px;
+    }
+    #login-btn {
+        margin: 20px 0;
+        height: 40px;
+        border-radius: 15px;
+        border: none;
+        background-color: #2b2684;
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: 0.5s;
+        cursor: pointer;
+        height: 40px;
+        width: 100%;
+    }
+    span {
+        text-align: center;
+        position: relative;
+    }
+    .or {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+        color: #2b2684;
+        margin-bottom: 20px;
+        font-size: 0.8rem;
+    }
+    .or hr {
+        width: 40%;
+        height: 1px;
+        background-color: #2b2684;
+        border: none;
+        align-self: center;
+    }
+    .google-btn {
+        height: 40px;
+        width: 100%;
+        border: 1px solid #2b2684;
+        border-radius: 15px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        margin-bottom: 20px;
+        color: #2b2684;
+        transition: 0.5s;
+        cursor: pointer;
+    }
+    .google-btn svg {
+        width: 20px;
+        margin-right: 10px;
+    }
+    .register {
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .register-btn {
+        height: 25px;
+        padding: 5px 15px;
+        display: flex;
+        align-items: center;
+        font-size: 0.875rem;
+        font-weight: bold;
+        background-color: white;
+        border: 1px solid #2b2684;
+        border-radius: 10px;
+        color: #2b2684;
+        transition: 0.5s;
+        cursor: pointer;
+    }
+    .register p {
+        margin: 0 11px 0;
+    }
+    #login-btn:hover,
+    .google-btn:hover,
+    .register-btn:hover {
+        transform: scale(1.1);
+    }
+</style>

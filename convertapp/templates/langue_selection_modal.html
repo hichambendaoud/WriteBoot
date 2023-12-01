@@ -1,0 +1,27 @@
+<!-- language_selection_modal.html -->
+<div class="modal" id="languageSelectionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 style="color: #2b2684; margin-bottom: 20px;" class="modal-title mx-auto" id="exampleModalLabel">Choisir la langue</h4>
+              <button type="button" class="btn-close" style="margin-right: 1px; margin-bottom: 11px;" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form method="post" action="{% url 'create_project' %}">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      
+                      <select id="language" name="language" class="form-select" size="4">
+                          <option value="en-US">English</option>
+                          <option value="fr-FR">French </option>
+                          <option value="ar-AR">Arabic</option>
+                          <option value="ta">Tamazight</option>
+                      </select>
+                  </div>
+                  <button type="submit" class="btn  btn-language mt-3">Créer</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+

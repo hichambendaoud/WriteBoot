@@ -1,0 +1,390 @@
+<style>
+    /* Add your CSS here */
+
+    /* Custom font */
+    @import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+    
+
+    /* Form styles */
+    #msform {
+        
+        position: relative;
+        
+    }
+
+    #msform fieldset {
+        background: white;
+    border: 0 none;
+    border-radius: 8px;
+   
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0 0%;
+    position: relative;
+    }
+
+    /* Hide all except the first fieldset */
+    #msform fieldset:not(:first-of-type) {
+        display: none;
+    }
+
+
+    /* Inputs */
+    #msform input, #msform textarea {
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        font-family: Montserrat;
+        color: #2C3E50;
+        font-size: 16px;
+        
+    }
+
+    #msform input:focus, #msform textarea:focus {
+        -moz-box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        border: 1px solid #2b2684;
+        outline-width: 0;
+        transition: all 0.5s ease-in;
+        -webkit-transition: all 0.5s ease-in;
+        -moz-transition: all 0.5s ease-in;
+        -o-transition: all 0.5s ease-in;
+    }
+
+    /* Buttons */
+    #msform .action-button {
+        width: 130px;
+        background: #2b2684;
+        font-weight: bold;
+        color: white;
+        border: 0 none;
+        border-radius: 25px;
+        cursor: pointer;
+        padding: 10px 5px;
+        margin: 10px 5px;
+    }
+
+    #msform .action-button:hover, #msform .action-button:focus {
+        box-shadow: 0 0 0 2px white, 0 0 0 3px #2b2684;
+    }
+
+
+    /* Headings */
+    .fs-title {
+        font-size: 18px;
+        text-transform: uppercase;
+        color: #2C3E50;
+        margin-bottom: 10px;
+        letter-spacing: 2px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 8px;
+    }
+
+    .fs-subtitle {
+        font-weight: normal;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 20px;
+        text-align: center;
+        margin-bottom: 8px;
+    }
+
+    
+    #progressbar {
+        list-style: none; /* Remove the default marker */
+        padding: 0;
+    }
+
+    /* Style the icons and text */
+    #progressbar li {
+        color: #666;
+        text-transform: uppercase;
+        font-size: 20px; /* Increase this value for larger icons */
+        width: 33.33%;
+        float: left;
+        position: relative;
+        letter-spacing: 1px;
+        text-align: center;
+        margin-bottom: 60px;
+    }
+    
+    #progressbar li:before {
+        content: "";
+        display: block;
+        font-size: 36px; /* Adjust this value for larger icons */
+        color: #2b2684; /* Icon color */
+        margin-bottom: 10px; /* Adjust this value for spacing */
+    }
+    
+
+
+#progressbar li span {
+        font-size: 12px;
+        color: #666;
+        display: block;
+    }
+
+    #msform label{
+        font-size: 15px;
+        color: #666;
+        
+    }
+
+/* Highlight the active step */
+    #progressbar li.active {
+        color: #2b2684;
+    }
+
+    #progressbar li.active:before, #progressbar li.active:after {
+        background: #2b2684;
+        color: white;
+    }
+ 
+    #progressbar li i {
+        font-size: 24px;
+        color: #2b2684;
+        margin-bottom: 5px;
+    }
+    
+
+    #progressbar li.active i {
+        color: #2b2684;
+    }
+    
+    .modal-content {
+        background-color: #fff;
+        border-radius: 8px;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+        width: 100%; /* Adjust the width percentage as needed */
+        box-sizing: border-box;
+        position: relative;
+    }
+    
+
+
+
+</style>
+<!-- Multi-Step Form Modal -->
+<div id="profileModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+           <!-- MultiStep Form -->
+        
+                <div id="msform">
+                    
+
+                        <!-- Progressbar -->
+                        <ul id="progressbar">
+                            <!-- Modify your existing code -->
+                            <li class="active" data-step="1">
+                                <i class="fas fa-user"></i>
+                                <span>Profil</span>
+                            </li>
+                            <li data-step="2">
+                                <i class="fas fa-user-edit"></i>
+                                <span>Modifier le profil</span>
+                            </li>
+                            <li data-step="3">
+                                <i class="fas fa-lock"></i>
+                                <span>Modifier le mot de passe</span>
+                            </li>
+                        </ul>
+                    <!-- Fieldsets -->
+                    <fieldset>
+                        <h2 class="fs-title">Informations sur le profil</h2>
+                       
+
+                        <label for="profileEmail">E-mail:</label>
+                        <input type="text" id="profileEmail" name="profileEmail" value="{{ user.email }}" readonly>
+
+                        <label for="full_name">Nom et prénom:</label>
+                        <input type="text" id="full_name" name="full_name" value="{{ user.get_full_name }}"  readonly>
+                    </fieldset>
+                    <fieldset>
+                        <form id="updateProfileForm" method="POST" action="{% url 'update_profile_and_password' %}">
+                            {% csrf_token %}
+                            <h2 class="fs-title">Modifier le Profil</h2>
+                           
+
+                             <!-- First Name -->
+                            
+                                <label for="first_name">Prénom</label>
+                                <input type="text" id="first_name" value="{{ user.first_name }}" placeholder="First Name" name="first_name" required>
+                       
+                             <!-- Last Name -->
+                            
+                                <label for="last_name">Nom</label>
+                                <input type="text" class="form-control" id="last_name" value="{{ user.last_name }}" placeholder="Last Name" name="last_name" required>
+                       
+                            <div style="text-align:center;">
+                            <input type="submit" name="update_profile" class="save action-button" value="sauvegarder"/>
+                            </div>
+                        </form>
+                    </fieldset>
+                    <fieldset>
+                        <form id="updatePasswordForm" method="POST" action="{% url 'update_profile_and_password' %}">
+                            {% csrf_token %}
+                            <h2 class="fs-title">Modifier le mot de passe</h2>
+                           
+                            
+                            <!-- Current Password -->
+                           
+                                <label for="current_password">Mot de passe actuel</label>
+
+                                <input type="password" 
+                                placeholder="Current Password"
+                                id="current_password" 
+                                name="current_password" required>
+                           
+    
+                            <!-- New Password -->
+                            
+                                <label for="new_password">nouveau mot de passe</label>
+                                <input type="password" id="new_password" 
+                                placeholder="New Password"
+                                name="new_password" required>
+                           
+    
+                            <!-- Confirm New Password -->
+                            
+                                <label for="confirm_password">Confirmer le nouveau mot de passe</label>
+                                <input type="password" id="confirm_password" 
+                                placeholder="Confirm New Password"
+                                name="confirm_password" required>
+                                <div style="text-align:center;">
+                                    <input type="submit" class="submit action-button" name="update_password" value="sauvegarder"/>
+                                </div>
+                        </form>
+                    
+                    </fieldset>
+                
+                </div>
+          
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript to handle form navigation and validation
+    $(document).ready(function () {
+       
+        // Update Profile button click handler
+        $('#updateProfileForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+    
+            // Prepare data for updating user fields
+            var userData = {
+                first_name: $('#first_name').val(),
+                last_name: $('#last_name').val(),
+                // Add other user fields here as needed
+            };
+    
+            // Send an AJAX request to update user fields
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'update_profile_and_password' %}', // Update the URL
+                data: userData,
+                success: function (response) {
+                    // Handle the success response here
+                    alert('Profile updated successfully.');
+                    // Refresh the current page
+                    location.reload();
+                },
+                error: function (error) {
+                    // Handle any errors here
+                    alert('Profile update failed. Please check the form data.');
+                }
+            });
+        });
+    
+    
+    
+        // Update Password form submission handler
+        $('#updatePasswordForm').on('submit', function (e) {
+            e.preventDefault();
+            var currentPassword = $('#current_password').val();
+            var newPassword = $('#new_password').val();
+            var confirmPassword = $('#confirm_password').val();
+    
+            // Check if the new password and confirm password match
+            if (newPassword !== confirmPassword) {
+                alert('New password and confirm password do not match.');
+                return;
+            }
+    
+            // Prepare data for updating the password
+            var passwordData = {
+                current_password: currentPassword,
+                new_password: newPassword,
+                confirm_password: confirmPassword
+            };
+    
+            // Send an AJAX request to update the password
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'update_profile_and_password' %}', // Update the URL
+                data: passwordData,
+                success: function (response) {
+                    // Handle the success response here
+                    alert('Password updated successfully.');
+                    // Refresh the current page
+                    location.reload();
+                },
+                error: function (error) {
+                    // Handle any errors here
+                    alert('Password update failed. Please check the form data.');
+                }
+            });
+        });
+    });
+    
+    </script>
+    
+<script>
+  
+    // Close the modal if the user clicks anywhere outside of it
+    window.addEventListener('click', function(event) {
+        var modal = document.getElementById('profileModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+    
+    
+    
+    
+
+    // JavaScript code to handle progress bar navigation
+var progressbarItems = document.querySelectorAll('#progressbar li');
+
+progressbarItems.forEach(function(item) {
+    item.addEventListener('click', function() {
+        var step = this.getAttribute('data-step');
+        navigateToStep(step);
+    });
+});
+
+// Function to navigate to a specific step
+function navigateToStep(step) {
+    var fieldsets = document.querySelectorAll('#msform fieldset');
+    fieldsets.forEach(function(fieldset, index) {
+        if (index + 1 === parseInt(step)) {
+            fieldset.style.display = 'block';
+            progressbarItems[index].classList.add('active');
+        } else {
+            fieldset.style.display = 'none';
+            progressbarItems[index].classList.remove('active');
+        }
+    });
+}
+
+</script>

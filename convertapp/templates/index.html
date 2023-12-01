@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Accueil{% endblock %}
+{% block home %}
+<style>
+  .btn-commencer {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .btn-commencer:hover {
+    transform: scale(1.1);
+  }
+  
+</style>
+
+  {% comment %}  header {% endcomment %}
+  <div class="hero vh-100 d-flex align-items-center" id="home">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 mx-auto text-center">
+          <h1 class="display-4 text-white py-2">Convertisseur audio en texte</h1>
+          
+          <p class="text-white my-3 py-3 fs-4">
+            Transformez instantanément votre audio en texte avec notre application alimentée par l'apprentissage automatique, pour une transcription précise et efficace
+          </p>
+          {% if request.user.is_authenticated %}
+          <a href="{% url 'Gestion_workspaces' %}" class="btn btn-outline-light rounded-4 fs-4 py-2 btn-commencer">
+            Commencer 
+          </a>
+          
+            {% else %}
+          <button class="btn btn-outline-light rounded-4 fs-4 py-2  btn-commencer" data-bs-toggle="modal" data-bs-target="#loginModal">
+            Commencer 
+          </button>
+          {% endif %}
+          {% comment %} <a href="#langues" class="btn btn-outline-light rounded-4 fs-4 py-2">Commencer 
+          </a> {% endcomment %}
+         </div>
+      </div>
+    </div>
+  </div> 
+  {% endblock %}
+  {% block Langues %}
+  <!-- langues -->
+  <section id="langues">
+    <div class="container">
+      <div class="row mb-5">
+        <div class="col-md-8 mx-auto text-center">
+          {% comment %} <h6 class="text-primary">Langues</h6> {% endcomment %}
+          <h1>Rencontrez nos langues</h1>
+          <p>
+            Nous proposons du contenu dans plusieurs langues pour répondre aux besoins d'un public diversifié. Veuillez sélectionner votre langue parmi les options ci-dessous.
+            Il vous suffit de choisir la langue qui vous convient.
+          </p>
+        </div>
+      </div>
+      <div class="row text-center g-4">
+        <div class="col-lg-3 col-sm-6">
+          <div class="team-member card-effect">
+              <img src={% static 'convertapp/media/english.png' %} alt="English" />
+            <h5 class="mb-0 mt-4">Anglais</h5>
+            {% comment %} <div class="social-icons">
+              {% if request.user.is_authenticated %}
+              <button class="btn  btn-outline-dark rounded-4 py-1" onclick="location.href='{% url 'Gestion_workspaces' %}'">Try Now</button>
+              {% else %}
+              <button class="btn btn-outline-dark rounded-4 py-1" data-bs-toggle="modal" data-bs-target="#signupModal">Try Now</button>
+              {% endif %}
+            </div> {% endcomment %}
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="team-member card-effect">
+              <img src={% static 'convertapp/media/frensh.png' %} alt="" />
+            <h5 class="mb-0 mt-4">français</h5>
+            {% comment %} <div class="social-icons">
+              {% if request.user.is_authenticated %}
+              <button class="btn  btn-outline-dark rounded-4 py-1" onclick="location.href='{% url 'Gestion_workspaces' %}'">Try Now</button>
+              {% else %}
+              <button class="btn btn-outline-dark rounded-4 py-1" data-bs-toggle="modal" data-bs-target="#signupModal">Try Now</button>
+              {% endif %}
+            </div> {% endcomment %}
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="team-member card-effect">
+              <img src={% static 'convertapp/media/ar.png' %} alt="" />
+            <h5 class="mb-0 mt-4">العربية</h5>
+            {% comment %} <div class="social-icons">
+              {% if request.user.is_authenticated %}
+              <button class="btn  btn-outline-dark rounded-4 py-1" onclick="location.href='{% url 'Gestion_workspaces' %}'">Try Now</button>
+              {% else %}
+              <button class="btn btn-outline-dark rounded-4 py-1" data-bs-toggle="modal" data-bs-target="#signupModal">Try Now</button>
+              {% endif %}
+            </div> {% endcomment %}
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="team-member card-effect">
+              <img src={% static 'convertapp/media/tamazight.png' %} alt="" />
+            <h5 class="mb-0 mt-4">ⵜⴰⵎⴰⵣⵉⵖⵜ</h5>
+            {% comment %} <div class="social-icons">
+              {% if request.user.is_authenticated %}
+              <button class="btn  btn-outline-dark rounded-4 py-1" onclick="location.href='{% url 'Gestion_workspaces' %}'">Try Now</button>
+              {% else %}
+              <button class="btn btn-outline-dark rounded-4 py-1" data-bs-toggle="modal" data-bs-target="#signupModal">Try Now</button>
+              {% endif %}
+            </div> {% endcomment %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endblock %}
+
+  {% block service %} 
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="container">
+      <div class="row mb-5">
+        <div class="col-md-8 mx-auto text-center">
+          {% comment %} <h6 class="text-primary">SERIVCES</h6> {% endcomment %}
+          <h1>Notre service</h1>
+          <p>
+            Découvrez nos services révolutionnaires :<br> convertissez un fichier audio en texte, bénéficiez d'une reconnaissance vocale en temps réel. Simplifiez votre expérience en ligne et transformez vos contenus en quelques clics. Essayez dès maintenant et libérez tout le potentiel de votre communication.
+          </p>
+          {% comment %} ajoutez des sous-titres captivants à vos vidéos {% endcomment %}
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-6 col-sm-6">
+          <div class="service card-effect bounceInUp">
+            <div class="iconbox">
+              <i class="fa-solid fa-file-audio" style="--fa-primary-color: #f0f2f4; --fa-secondary-color: #f0f2f4;"></i>
+            </div>
+            <h5 class="mt-4 mb-2">Importez un fichier audio</h5>
+            <p>
+              Convertissez vos enregistrements audio en texte en un clin d'œil. Téléchargez simplement votre fichier audio et notre système se chargera automatiquement de le transcrire avec précision.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-sm-6">
+          <div class="service card-effect">
+            <div class="iconbox">
+              <i class="fa-solid fa-microphone-lines"></i>
+            </div>
+            <h5 class="mt-4 mb-2">Conversion en temps réel</h5>
+            <p>
+              Transformez instantanément la parole en texte en temps réel. Idéal pour les événements en direct, les réunions ou toute situation où vous avez besoin d'une transcription rapide et précise.
+            </p>
+          </div>
+        </div>
+
+        {% comment %} <div class="col-lg-4 col-sm-6">
+          <div class="service card-effect">
+            <div class="iconbox">
+              <i class="fa-regular fa-closed-captioning"></i>
+            </div>
+            <h5 class="mt-4 mb-2">Ajoutez des sous-titres</h5>
+            <p>
+              Obtenez les dialogues de vos vidéos sous forme de texte et ajoutez des sous-titres parfaitement synchronisés. Améliorez vos vidéos en offrant une expérience visuelle et accessible à un large public.
+            </p>
+          </div>
+        </div> {% endcomment %}
+
+      </div>
+    </div>
+  </section>
+{% endblock %}
+  {% block script %}
+  <script>
+    function redirectToLanguagePage(projectId, selectedLanguage) {
+        const projectId = document.getElementsByName("project_id")[0].value;
+        var url = `/${selectedLanguage}/?project_id=${projectId}/`;
+        window.location.href = url;
+    }
+  </script>
+  {% endblock %}
+
+
+
+
+

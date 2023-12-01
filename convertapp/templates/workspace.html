@@ -1,0 +1,937 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}workspace Detail{% endblock %}
+
+
+{% block head %} 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<style>
+    .home-bg {
+    margin-top:64px;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    background-color: #ecf0f1;
+
+    {% comment %} background: linear-gradient(90deg, #700B50, #473884); {% endcomment %}
+    height: 100%; /* Set the height to 100% of the viewport height */
+    }
+        
+    h1,h2,h3,h4,h5,h6,
+    .display-4 {
+    color: #000000;
+    font-weight: 700;
+    }
+    label{
+        color: #OOOOOO;
+    }
+    .navbar-scrolled {
+        background-color: #1c1b1b92; /* Set your desired background color */
+    }
+    .navbar {
+        background-color: #2c3e50;
+        }
+    @media (max-width: 768px) {
+        .home-bg {
+            background-size: auto;
+        }
+        .card {
+            width: 100%; 
+        }
+    }
+    /* Add CSS for sidebar */
+    .sidebar {
+        margin-top: 64px;
+        position: fixed;
+        top: 0;
+        left: -217px; /* Align to the left side */
+        height: 100%;
+        width: 217px; /* Adjust the width as needed */
+        z-index: 1000;
+        background-color: #1c1b1b92; /* Set your desired background color */
+        color: white;
+        padding-top: 20px;
+        transition: left 0.3s; /* Change 'right' to 'left' for sliding from the left */
+    }
+    
+
+    /* Add more CSS styles for sidebar content as needed */
+    .sidebar h4 {
+        color: #fff; /* Set text color for heading */
+        margin-left: 10px;
+    }
+
+    .list-group-item {
+        background-color: transparent;
+        border: none;
+    }
+
+    .list-group-item a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .list-group-item a:hover {
+        text-decoration: underline;
+    }
+    #newConversationBtn {
+        background-color: #1516183b; /* Change to your desired button background color */
+        color: white; /* Text color */
+        border-radius: 4px;
+        padding: 10px 20px;
+        margin-left: 14px;
+        margin-bottom: 5px; /* Adjust margin as needed */
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+    
+    #newConversationBtn:hover {
+        background-color: #1516183b; /* Change to your desired hover background color */
+    }
+    
+    #newConversationBtn:focus {
+        outline: none;
+    }
+    
+    /* Style the "Conversations" button outside the sidebar */
+    /* Style for the "Conversations" button outside the sidebar */
+    #outsideToggleSidebarBtn {
+        background-color: #fff; /* Gray background color */
+        color: black; /* White text color */
+        border-radius: 10px;
+        border-color:black;
+        padding: 10px 20px;
+        margin: 10px; /* Adjust margin as needed */
+        cursor: pointer;
+        position: fixed; /* Position absolutely within the .home-bg container */
+        {% comment %} top: 75px; /* Adjust the top value to move it closer to the navbar */
+        right: 20px; /* Adjust the left value to move it horizontally */ {% endcomment %}
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+
+    #outsideToggleSidebarBtn:hover {
+         background-color: #555; /* Darker gray on hover */
+         color:#fff;
+    }
+
+    #outsideToggleSidebarBtn:focus {
+        outline: none;
+    }
+
+    #toggleSidebarBtn {
+        
+        color: white; /* Change to your desired text color */
+        border-radius: 10px; /* Adjust the value to your desired border radius */
+    }
+    .sidebar-content {
+        max-height: 550px; /* Set your desired maximum height */
+        overflow-y: auto; /* Enable vertical scrolling */
+    }
+    label[for="audioFile"] {
+        display: inline-block;
+        background-color: #3498db; /* Change to your desired background color (e.g., blue) */
+        color: #fff; /* Text color */
+        border-radius: 10px; /* Adjust the border radius as needed */
+        padding: 19px 20px; /* Adjust the padding to change the size */
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 700; /* Change to your desired font size */
+        transition: background-color 0.3s, color 0.3s;
+        box-shadow: 0 0.7em 1.2em rgba(25, 25, 25, 0.5);
+    }
+
+
+    label[for="audioFile"]:hover {
+        background-color: #2980b9; /* Change to your desired hover background color */
+        color: #fff;
+    }
+
+    label[for="audioFile"] input[type="file"] {
+        display: none; /* Hide the file input */
+    }
+    
+    /* Style the close button */
+.btn-close {
+    position: absolute;
+    top: 16px;
+    right: 10px;
+    z-index: 1001; /* Ensure it's above the sidebar content */
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #fff;
+}
+/* Style the custom select */
+.custom-select {
+    width: 124px; /* Adjust the width as needed */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Style the selected option */
+.custom-select option:checked {
+    background-color: #ecf0f1;
+    color: #fff;
+}
+
+/* Style the dropdown arrow (optional) */
+.custom-select::after {
+    content: '\25BC'; /* Unicode character for down arrow */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+}
+#projectName{
+    padding: 8px 10px 0px 0px;
+}
+#editProjectName{
+    margin-top: 3px;
+}
+.dropdown-center{
+    top:3px;
+}
+/* Add these styles to your existing CSS */
+
+/* Add transition for smoother animation */
+.mic-button, #toggle-btn {
+    width: 70px;
+    height: 70px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+    transition: 0.5s; /* Add transition for smoother animation */
+    animation: none; /* Disable the animation by default */
+    
+}
+
+/* Combine the styles for the microphone button icon */
+.mic-button i, #toggle-btn i {
+    font-size: 23px;
+    transition: 0.9s;
+    animation: none; /* Disable the animation by default */
+}
+
+/* Center the microphone button vertically */
+.mic-button.center, #toggle-btn.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Optional, set the height to make it take up the full height of its parent */
+}
+
+/* Combine the styles for the active state of the microphone button */
+.mic-button.active, #toggle-btn.active {
+    background-color: #ff0000; /* Change to your desired active background color */
+    color: #ffffff; /* Change to your desired active text color */
+    animation: pulse 1s infinite, color-change 1s infinite; /* Apply the pulse and color-change animations */
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 15px -1px rgba(255, 0, 0, 0.5); /* Add a red shadow when active */
+    border: 2px solid transparent; /* Set the initial border as transparent */
+    border-radius: 50%; /* Ensure the button has a circular shape */
+}
+
+/* Combine the styles for the active state of the microphone button icon */
+.mic-button.active i, #toggle-btn.active i {
+    color: #ffffff;
+}
+
+/* Combine the styles for the hover state of the microphone button */
+.mic-button:hover, #toggle-btn:hover {
+    background-color: #ff0000;
+    color: #ffffff;
+}
+
+/* Add the pulse animation keyframes */
+@keyframes pulse {
+    0% {
+        transform: scale(1); /* Start at normal size */
+    }
+    50% {
+        transform: scale(1.05); /* Increase size by 5% */
+    }
+    100% {
+        transform: scale(1); /* Back to normal size */
+    }
+}
+/* Color-change animation for the microphone button */
+    @keyframes color-change {
+        0% {
+            background-color: #ff0000; /* Start with your active background color */
+        }
+        50% {
+            background-color: #ff6600; /* Change to a different color at 50% */
+        }
+        100% {
+            background-color: #ff0000; /* Back to the original color at 100% */
+        }
+    }
+/* Additional styles for the #toggle-btn */
+#toggle-btn {
+    background-color: #808080; /* Gray color when closed */
+    color: #fff; /* Text color */
+    font-size: 20px; /* Adjust font size as needed */
+}
+
+/* Flowing border animation for the microphone button */
+    @keyframes flow-border {
+        0% {
+            border-image-source: linear-gradient(0deg, #ff0000, #ff6600); /* Change gradient colors as desired */
+            border-image-slice: 1;
+            border-width: 2px;
+        }
+        100% {
+            border-image-source: linear-gradient(360deg, #ff0000, #ff6600); /* Change gradient colors as desired */
+            border-image-slice: 1;
+            border-width: 2px;
+            transform: rotate(360deg);
+        }
+    }
+
+/* Style for the normal state of nav-link */
+.navbar-nav .nav-link {
+    color: white; /* Text color for normal state */
+    transition: color 0.3s; /* Smooth transition for color change */
+}
+
+/* Style for the hover state of nav-link */
+.navbar-nav .nav-link:hover {
+    color: #ff0000; /* Text color for hover state (change to your desired color) */
+}
+
+#recognized_text {
+    border-radius: 10px; /* Adjust the border radius as needed */
+    font-family: Arial, sans-serif; /* Change the font family as needed */
+    font-size: 16px; /* Change the font size as needed */
+    padding: 10px; /* Add padding to the textarea */
+    resize: none; /* Disable textarea resizing */
+    /* Other styles you may want to apply */
+}
+
+/* Add this CSS to your existing styles */
+.custom-paragraph {
+    width: 100%;
+    color: black;
+    
+    word-wrap: break-word;
+    background-color: white;
+    border-radius: 0.25rem; /* Add the desired border radius */
+    padding: 0.375rem 0.75rem; /* Add padding to your paragraphs as needed */
+    border: 1px solid #ced4da; /* Add a border as needed */
+    margin-bottom: 10px; /* Adjust margin as needed */
+    display: inline-block; /* Remove 'd-flex' and change to 'inline-block' */
+    box-sizing: border-box; /* Include padding in the width calculation */
+}
+/* Default styles for the copy icon */
+#copy-icon {
+    color: #000; /* Default color */
+}
+
+/* Hover state styles for the copy icon */
+#copy-icon:hover {
+    color: #007bff; /* Change the color on hover */
+}
+
+
+/* Add a hover effect to the icon */
+.copy-button:hover #copy-icon {
+    color: #007bff; /* Change the color on hover */
+}
+
+/* Optionally, add a hover effect to the copied icon */
+.copy-button:hover #copied-icon {
+    color: #007bff; /* Change the color on hover */
+}
+.copy-button {
+    border: none;
+}
+
+#info_message {
+    text-align: center;
+  }
+
+  .custom-close-button {
+    background-color: #1516183b; /* Change to your desired button background color */
+    color: white; /* Text color */
+    border-radius: 4px;
+    padding: 10px 20px;
+    margin-left: 14px;
+    margin-bottom: 5px; /* Adjust margin as needed */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-close-button:hover {
+    background-color: #1516183b; /* Change to your desired hover background color */
+}
+
+.custom-close-button:focus {
+    outline: none;
+}
+/* Enable resizing for textareas with the 'resizable' class */
+.resizable {
+    resize: none; /* Disable browser-based resizing */
+    overflow: auto; /* Show scrollbars if content overflows */
+}
+
+</style>
+{% endblock %}
+<!-- Right nav -->
+{% block right_nav %}
+<!-- Lift -->
+<div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ms-auto mb-lg-0">
+      <li class="nav-item py-2 ms-2">
+        <a class="d-flex nav-link me-lg-4 fw-bolder " href="/"><b>Accueil</b></a>
+      </li>
+      <li class="nav-item py-2 ms-2">
+        <a class="d-flex nav-link me-lg-4 fw-bolder " href="{% url 'Gestion_workspaces' %}"><b>Gestion</b></a>
+      </li>
+      <li class="nav-item py-2 ms-2">
+        
+        <!-- "Conversations" button outside the sidebar -->
+        <button class="d-flex nav-link me-lg-4 fw-bolder " type="button" onclick="toggleSidebarAndNavbar()">
+            <b>Conversations</b>
+        </button>
+        
+      </li>
+      <li class="nav-item py-2 ms-2">
+        <div id="projectNameContainer">
+            <p id="projectName" class="mb-0 fw-bolder text-white" onclick="toggleEditProjectName()">{{ project.name }}</p>
+            <input type="text" class="form-control d-none" id="editProjectName" value="{{ project.name }}">
+        </div>
+      </li>
+      <li class="nav-item py-2 ms-2">
+        <div class="flex-shrink-0 dropdown-center me-lg-4">
+            <form method="POST" action="{% url 'update_language' %}" id="language-form">
+                {% csrf_token %}
+                <select id="language" name="language" onchange="updateLanguage()" class="custom-select">
+                    <option value="en-US" {% if language == 'en-US' %}selected{% endif %}>Anglaise</option>
+                    <option value="fr-FR" {% if language == 'fr-FR' %}selected{% endif %}>Français</option>
+                    <option value="ar-AR" {% if language == 'ar-AR' %}selected{% endif %}>Arabe</option>
+                    <option value="ta" {% if language == 'ta' %}selected{% endif %}>Tamazight</option>
+                </select>
+            </form>
+        </div>
+      </li>
+    </ul>
+        
+{% endblock%}
+
+{% block home %}
+<!-- End header -->
+<div class="home-bg d-flex align-items-center">
+    <div style="margin-top:40px; padding-top:20px;" class="container">
+        <!-- Sidebar -->
+        
+        <div class="sidebar">
+            <!-- "Toggle Sidebar" button inside the sidebar -->
+            <div class="sidebar-header mb-4 align-items-center">
+                {% comment %} <button class="btn btn-close" id="closeSidebarBtn" onclick="closeSidebar()"> </button>{% endcomment %}
+                <button id="newConversationBtn" class="btn mb-2 " data-project-id="{{ project.id }}">
+                    Nouvelle 
+                </button>
+                    <button class="btn mb-2 custom-close-button" id="closeSidebarBtn" onclick="closeSidebar()">
+                        <svg
+                            stroke="currentColor"
+                            fill="none"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="h-4 w-4"
+                            height="1em"
+                            width="1em"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="9" y1="3" x2="9" y2="21"></line>
+                        </svg>
+                    </button>
+                
+                
+            </div>
+            {% comment %} <h4>Conversations</h4> {% endcomment %}
+            <div class="sidebar-content">
+                
+                <div class="conversation-list">
+                    <ul class="list-group">
+                        {% for conversation in conversations %}
+                        <li class="list-group-item">
+                            <a href="{% url 'workspace' project.id %}?conversation_id={{ conversation.id }}">{{ conversation }}</a>
+                            <hr>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% comment %} <!-- "Conversations" button outside the sidebar -->
+        <button class="btn m-3" id="outsideToggleSidebarBtn" type="button" onclick="toggleSidebar()">
+            Conversations
+        </button> {% endcomment %}
+        <!-- Full-width column for "Audio Input and Real-time Speech Recognition" -->
+        <div class="row mb-5 {% if language == 'ta' %}d-none{% endif %}">
+            <div class="col-md-6 mx-auto align-items-center">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <!-- Remove the "card" element and replace it with plain divs -->
+                    <div class="mb-4 text-center">
+                        <h2>Convertissez votre audio ici</h2>
+                    </div>
+                    <!-- Select Audio File button -->
+                    <form method="POST" enctype="multipart/form-data" id="audioConversionForm">
+                        {% csrf_token %}
+                        <div class="mb-3 text-center">
+                            <label for="audioFile" class="btn d-flex justify-content-center align-items-center">
+                                Sélectionnez un fichier audio
+                                <input type="file" id="audioFile" name="audioFile" style="display: none;">
+                            </label>
+                        </div>
+                    </form>
+                    <div id="info">
+                        <p id="info_message">Cliquez sur l'icône du microphone et commencez à parler</p>
+                      </div>
+            
+                    <!-- Microphone button -->
+                    <div class="col-md-12 center" id="center-mic-button">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button id="toggle-btn" onclick="toggleRecognition()" class="mic-button">
+                                <i id="mic-icon" class="fas fa-microphone"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4 {% if language == 'ta' %}d-none{% endif %}" id="recognizedTextRow" style="display: none;">
+            <div class="col-md-10 mx-auto">
+                <form method="POST" enctype="multipart/form-data" id="realtime-recognition-form">
+                    {% csrf_token %}
+                    <!-- Other form inputs -->
+                    <textarea type="text" {% if language == 'ar-AR' %}dir="rtl"{% endif %} id="recognized_text" class="form-control resizable" name="recognized_text" style="background-color: white; font-size: 20px;"></textarea>
+                    <input type="hidden" id="recognizedTextHidden" name="recognized_text_hidden">
+
+                </form>
+            </div>
+        </div>
+
+        <div class="row mb-5 {% if language != 'ta' %}d-none{% endif %}">
+            <div class="col-12 text-center">
+                <h1>Langue Tamazight Non Disponible</h1>
+                
+                <p style="color: black; font-weight: 600; line-height: 2;">Nous tenons à vous informer que la langue tamazight n'est actuellement pas disponible pour la conversion audio en texte. Cette absence est due au manque de données suffisantes pour prendre en charge cette langue de manière précise.</p>
+                <p style="color: black; font-weight: 600; line-height: 2;">Nous travaillons activement pour élargir notre prise en charge linguistique et nous nous efforçons de rendre la langue tamazight disponible dans un avenir proche. Votre intérêt pour cette langue est précieux pour nous, et nous sommes déterminés à répondre à vos besoins.</p>
+                
+            </div>
+        </div>
+
+        <div class="row mb-4 {% if language == 'ta' %}d-none{% endif %}">
+            <div class="col-md-10 mx-auto">
+                {% if selected_conversation %}
+                <h3 {% if language == 'ar-AR' %}dir="rtl"{% endif %} class="text-center">Conversation {{ selected_conversation.sequence_number }}</h3>
+                <ul style="padding-right: 32px">
+                    {% for text_entry in selected_conversation.text_set.all reversed %}
+                    <div class="d-flex">
+                        <p class="custom-paragraph contenteditable-paragraph" contenteditable="true" style="font-size: 20px;">
+                            {{ text_entry.text_content }}
+                        </p>
+                        <button class="copy-button btn-sm" data-text="{{ text_entry.text_content }}" style="outline: none;">
+                            <i id="copy-icon" class="fas fa-copy"></i>
+                            <i id="copied-icon" class="fas fa-check d-none"></i>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+        
+        
+        
+               
+        
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+document.querySelector('.resizable').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = (this.scrollHeight) + 'px';
+});
+</script>
+<script>
+function applyDirAttributeToTextElements() {
+    const textElements = document.querySelectorAll('.custom-paragraph');
+    
+    textElements.forEach((element) => {
+        const text = element.textContent;
+        
+        // Check if the text contains Arabic characters
+        const isArabic = /[\u0600-\u06FF]/.test(text);
+
+        // Apply the 'dir' attribute based on the language
+        if (isArabic) {
+            element.setAttribute('dir', 'rtl');
+        } else {
+            element.setAttribute('dir', 'ltr');
+        }
+    });
+}
+
+// Call the function when the page loads
+window.addEventListener('load', applyDirAttributeToTextElements);
+
+// You may also call it whenever content is dynamically added or changed
+</script>
+<script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var copyButtons = document.querySelectorAll(".copy-button");
+        
+                copyButtons.forEach(function (button) {
+                    button.addEventListener("click", function () {
+                        var textToCopy = this.getAttribute("data-text");
+                        var copyIcon = this.querySelector("#copy-icon");
+                        var copiedIcon = this.querySelector("#copied-icon");
+        
+                        var tempTextArea = document.createElement("textarea");
+                        tempTextArea.value = textToCopy;
+                        document.body.appendChild(tempTextArea);
+        
+                        tempTextArea.select();
+                        document.execCommand("copy");
+                        document.body.removeChild(tempTextArea);
+        
+                        copyIcon.classList.add("d-none");
+                        copiedIcon.classList.remove("d-none");
+        
+                        setTimeout(function () {
+                            copyIcon.classList.remove("d-none");
+                            copiedIcon.classList.add("d-none");
+                        }, 1000);
+                    });
+                });
+            });
+        </script>
+<script>
+function toggleSidebarAndNavbar() {
+    var sidebar = document.querySelector('.sidebar');
+    var navbarNav = document.getElementById('navbarNav'); // Get the navbar collapse element
+
+    if (sidebar.style.left === '' || sidebar.style.left === '-217px') {
+        sidebar.style.left = '0';
+        // Close the navbar collapse
+        if (navbarNav) {
+            navbarNav.classList.remove('show');
+        }
+    } else {
+        sidebar.style.left = '-217px';
+    }
+}
+
+function closeSidebar() {
+    var sidebar = document.querySelector('.sidebar');
+    sidebar.style.left = '-217px';
+}
+
+      
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var fileInput = document.getElementById("audioFile");
+        fileInput.addEventListener("change", function () {
+            // Automatically submit the form when a file is selected
+            var form = document.getElementById("audioConversionForm"); // Replace with your form's ID
+            form.submit();
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Attach event listeners to editable paragraphs
+        $("p[contenteditable='true']").on("input blur", function() {
+            var newText = $(this).text(); // Get the modified text
+            var textEntryId = $(this).data("text-entry-id"); // Get the associated text entry ID
+            var $editableParagraph = $(this);
+            
+            // Make an AJAX POST request to update the text content
+            $.ajax({
+                url: "/update_text_content/", // Update this URL with your endpoint
+                method: "POST",
+                data: {
+                    textEntryId: textEntryId,
+                    newText: newText
+                },
+                success: function(data) {
+                    if (data.success) {
+                        // Text content updated successfully
+                        $editableParagraph.text("");
+                    } else {
+                        // Failed to update text content
+                    }
+                },
+                error: function(error) {
+                    console.error("An error occurred while updating text content:", error);
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    document.getElementById('newConversationBtn').addEventListener('click', function () {
+        var projectId = this.getAttribute('data-project-id');
+        
+        // Make an AJAX POST request to start a new conversation
+        fetch('/start_new_conversation/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCookie('csrftoken'), // Get CSRF token from cookies
+            },
+            body: 'projectId=' + projectId,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Redirect the user to the newly created conversation
+                window.location.href = `/workspace/${projectId}/?conversation_id=${data.conversationId}`;
+            } else {
+                // Failed: Display an error message
+                console.error('An error occurred while starting a new conversation. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            console.error('An error occurred while starting a new conversation. Please try again.');
+        });
+    });
+    
+    // Function to get the CSRF token from cookies
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    </script>
+    
+    <script>
+        var isEditingProjectName = false;
+
+function toggleEditProjectName() {
+    var projectName = document.getElementById('projectName');
+    var editProjectName = document.getElementById('editProjectName');
+
+    if (!isEditingProjectName) {
+        // Enter edit mode
+        projectName.classList.add('d-none');
+        editProjectName.classList.remove('d-none');
+        editProjectName.focus(); // Focus on the input field
+        isEditingProjectName = true;
+    } else {
+        // Exit edit mode
+        projectName.classList.remove('d-none');
+        editProjectName.classList.add('d-none');
+        isEditingProjectName = false;
+    }
+}
+
+// Function to handle Enter key press
+document.getElementById('editProjectName').addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Prevent the default Enter key behavior (e.g., line break)
+        updateProjectName();
+    }
+});
+
+function updateProjectName() {
+    var projectNameInput = document.getElementById('editProjectName');
+    var newName = projectNameInput.value;
+    var projectId = {{ project.id }};
+    var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    var url = `/update_project_name/${projectId}/`;
+    var formData = new FormData();
+    formData.append('projectName', newName);
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+        },
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update the text content of the projectName element with the new name
+            document.getElementById('projectName').textContent = newName;
+            projectNameInput.value = newName; // Update the input value
+            toggleEditProjectName(); // Close edit mode
+            /* alert('Project name updated successfully!');
+        } else {
+            alert('Failed to update project name. Please try again.');*/
+        }
+    })
+    .catch(error => {
+        alert('An error occurred while updating the project name. Please try again.');
+        console.error(error);
+    });
+}
+
+
+// Add an event listener to detect clicks outside of the project name element
+document.addEventListener('click', function(event) {
+    var projectName = document.getElementById('projectName');
+    var editProjectName = document.getElementById('editProjectName');
+
+    // Check if the click target is not any of the edit elements
+    if (event.target !== projectName && event.target !== editProjectName) {
+        if (isEditingProjectName) {
+            toggleEditProjectName(); // Close edit mode
+        }
+    }
+});
+
+    </script>
+    
+
+<script>
+    var recognitionLanguage = "{{ language }}"; // Assuming 'language' is the variable that holds the selected language value
+    var recognition = null;
+    var isRecognizing = false;
+    var punctuationMap = {
+        "period": ".",
+        "full stop": ".",
+        "comma": ",",
+        "colon": ":",
+        "semicolon": ";",
+        "exclamation mark": "!",
+        "question mark": "?",
+        "open parentheses": "(",
+        "close parentheses": ")",
+        "open bracket": "[",
+        "close bracket": "]",
+        "open brace": "{",
+        "close brace": "}",
+        "forward slash": "/",
+        "new paragraph": "\n",
+        "undo": "#undo",
+        "redo": "#redo"
+    }
+
+    // Get the info message element
+    var infoMessage = document.getElementById("info_message");
+
+    function toggleRecognition() {
+        var recognizedTextRow = document.getElementById("recognizedTextRow"); // Get the entire row
+        var toggleBtn = document.getElementById("toggle-btn");
+    
+        if (!isRecognizing) {
+            startRecognition();
+            recognizedTextRow.style.display = "block"; // Display the entire row
+            toggleBtn.classList.add("active"); // Add the "active" class to make the microphone red
+            isRecognizing = true;
+            // Set the info message when recognition starts
+            infoMessage.textContent = "Parlez maintenant.";
+        } else {
+            stopRecognition();
+            recognizedTextRow.style.display = "none"; // Hide the entire row
+            // Automatically submit the form when the microphone is closed
+            document.getElementById('realtime-recognition-form').submit();
+            // Clear the info message when recognition stops
+            infoMessage.textContent = "";
+        }
+    }
+    
+
+    function startRecognition() {
+        recognition = new webkitSpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = recognitionLanguage ;
+        
+        // Increase the recognition speed
+        recognition.rate = 2.0; // You can adjust this value as needed
+
+        recognition.start();
+
+        var recognized_text = document.getElementById("recognized_text");
+        recognized_text.innerHTML = "";
+
+        var toggleBtn = document.getElementById("toggle-btn");
+        
+        toggleBtn.classList.add("active"); // Add the "active" class to make the microphone red
+        isRecognizing = true;
+
+        recognition.onresult = function(event) {
+            var interim_transcript = '';
+            var final_transcript = '';
+            for (var i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    final_transcript += event.results[i][0].transcript;
+                } else {
+                    interim_transcript += event.results[i][0].transcript;
+                }
+            }
+            
+            // Display the recognized text in a textarea while the mic is open
+            var recognizedTextArea = document.getElementById("recognized_text");
+            recognizedTextArea.value += final_transcript;
+
+            // Populate the hidden input field with the recognized text
+            var recognizedTextHidden = document.getElementById("recognizedTextHidden");
+            recognizedTextHidden.value = recognizedTextArea.value;
+
+            // Check for recognized commands
+            var command = final_transcript.toLowerCase().trim();
+            if (command in punctuationMap) {
+                recognized_text.innerHTML += punctuationMap[command];
+            } else {
+                recognized_text.innerHTML += final_transcript;
+            }
+        };
+    }
+
+    function stopRecognition() {
+        recognition.stop();
+        var toggleBtn = document.getElementById("toggle-btn");
+        toggleBtn.classList.remove("active"); // Remove the "active" class to make the microphone gray
+        isRecognizing = false;
+    }
+</script>
+
+<script>
+    function updateLanguage() {
+        document.getElementById("language-form").submit();
+    }
+</script>
+
+
+    {% endblock %}
+    {% block footer %} 
+    {% endblock %}

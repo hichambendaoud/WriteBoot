@@ -1,0 +1,228 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {% comment %} <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/boxicons.min.css" /> {% endcomment %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css" integrity="sha512-pVCM5+SN2+qwj36KonHToF2p1oIvoU3bsqxphdOIWMYmgr4ZqD3t5DjKvvetKhXGc/ZG5REYTT6ltKfExEei/Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      rel="canonical"
+      href="https://getbootstrap.com/docs/5.3/examples/sticky-footer/"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      integrity="sha384-WfIz8pP+DClP11ms/hDbiG6Yz71/Q2LZn+Cfppq2BjgvDTn7M++wSBAUoc7pRjR/"
+      crossorigin="anonymous"
+    />
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    {% comment %} Fontawesome {% endcomment %}
+    <script src="{% static 'fontawesomefree/js/fontawesome.js' %}"></script>
+    <script src="{% static 'fontawesomefree/js/solid.js' %}"></script>
+    <script src="{% static 'fontawesomefree/js/brands.js' %}"></script>
+    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+    <link
+      href="{% static 'fontawesomefree/css/all.min.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="{% static 'fontawesomefree/css/fontawesome.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="{% static 'fontawesomefree/css/brands.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="{% static 'fontawesomefree/css/solid.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <title>{% block title %}Accueil{% endblock %}</title>
+    {% block head %} {% endblock %}
+    <style>
+      
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        background-color: #F3F5F7; /* Background color for the circular avatar */
+        color: #596573; /* Text color for the initials */
+        border-radius: 50%; /* Makes it circular */
+        text-align: center;
+        line-height: 40px; /* Vertically center the initials */
+        font-size: 20px; /* Adjust the font size for initials */
+        overflow: hidden; /* Ensure that the initials don't overflow */
+    }
+    
+    .user-initials {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+    }
+    /* For large screens and above, use dropdown-menu-end */
+@media (min-width: 769px) {
+    .custom-dropdown-menu {
+        right: 0 !important;
+        left: auto !important;
+    }
+}
+
+/* For screens smaller than 767px, use dropdown-menu-lg-start */
+@media (max-width: 768px) {
+    .custom-dropdown-menu {
+        right: auto !important;
+        left: 0 !important;
+    }
+}
+
+/* For screens smaller than 992px, use dropdown-menu-lg-start */
+@media (max-width: 992px) {
+  .custom-dropdown-menu {
+      right: auto !important;
+      left: 0 !important;
+  }
+}
+
+  </style>
+  </head>
+  <!-- Body Content -->
+  <body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="70">
+    <!-- NAVBAR -->
+    {% block nav %} 
+    <!-- Brand -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark p-md-2 ">
+      <div class="container-fluid">
+        <!-- logo -->
+        <a class="col-md-3 d-flex" href="/">
+          {% load static %}<img src={% static 'convertapp/bg/mylogo.png' %} class="img-fluid"  width="110" alt="logo" />
+        </a>
+          <!-- Collapse -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+            
+        <!-- Right -->
+        {% block right_nav %} 
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto mb-lg-0">
+            <li class="d-flex nav-item py-2">
+              <a class="nav-link me-lg-4 fw-bolder" href="#home">
+                <b>Accueil</b>
+              </a>
+            </li>
+            <li class="d-flex  nav-item py-2">
+              <a class="nav-link me-lg-4 fw-bolder" href="#langues">
+                <b>Langues</b>
+              </a>
+            </li>
+            <li class="d-flex nav-item py-2">
+              <a class="nav-link me-lg-4 fw-bolder" href="#services">
+                <b>Services</b>
+              </a>
+            </li>
+          </ul>
+          {% endblock %}
+          {% if request.user.is_authenticated %}
+          <div class="flex-shrink-0 dropdown py-2 me-lg-4">
+            <a href="#" class="d-flex align-items-center dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="user-avatar">
+                    <span class="user-initials">{{ user.get_initials }}</span>
+                </div>
+            </a>
+            <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#profileModal"><i class="fas fa-sliders-h fa-fw"></i> Compte</button></li>
+              <li><button type="button"class="dropdown-item"><i class="fas fa-cog fa-fw"></i> Paramètres</a></button>
+              <li><hr class="dropdown-divider"></li>
+              <button type="button" class="dropdown-item" onclick="window.location.href='{% url 'logout' %}'">
+                <i class="fas fa-sign-out-alt fa-fw"></i> Déconnexion
+              </button>
+            </ul>
+          </div>
+           {% else %}
+          
+            <li class="nav-item d-flex py-2">
+              <a class="btn me-lg-3 btn-light rounded-4 py-1" data-bs-toggle="modal" data-bs-target="#loginModal">Connexion <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
+                {% comment %} <a class="btn me-lg-3 btn-light rounded-4 py-1" href="{% url 'loginPage' %}">Connexion</a> {% endcomment %}
+                {% comment %} <a class="btn me-lg-3 btn-light rounded-4 py-1" data-bs-toggle="modal" data-bs-target="#loginPage">Connexion</a> {% endcomment %}
+            </li>
+            <li class="nav-item d-flex py-2">
+              <a class="btn me-lg-3 btn-outline-light rounded-4 py-1" data-bs-toggle="modal" data-bs-target="#signupModal" style="
+              padding-right: 24px;
+              padding-left: 21px;
+          ">S'inscrire <i class="fa-solid fa-user-plus"></i></a>
+                {% comment %} <a class="btn me-lg-3 btn-info rounded-4 py-1" href="{% url 'signupPage' %}">S'inscrire</a> {% endcomment %}
+            </li>
+          
+           {% endif %}
+        </div>
+      </div>
+    </nav>
+    {% endblock %}
+
+    {% block home %} 
+    <!-- start header -->   
+      {% endblock %}
+
+    {% block Langues %} 
+    <!-- langues -->
+      {% endblock %}
+
+    {% block service %} 
+    <!-- Services -->
+      {% endblock %}
+
+    {% block footer %} 
+    <!-- Footer -->
+      {% include "footer.html" %}
+      {% endblock %}
+      
+    <!-- LoginModal -->
+    {% include 'loginModal.html' %}
+    <!-- SingupModal -->
+    {% include 'signupModal.html' %}
+    <!-- language_selection_modal -->
+    {% include 'langue_selection_modal.html' %}
+    {% include 'deleteModal.html' %}
+    <!-- profile_modal -->
+    {% include 'profile.html' %}
+
+    <!-- script --> 
+    {% include "scripts.html" %}
+    {% block script %}
+    
+        {% endblock %}
+  </body>
+</html>
